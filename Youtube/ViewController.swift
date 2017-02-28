@@ -57,7 +57,7 @@ class VideoCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.backgroundColor = .blue
         imageView.image = UIImage(named: "Amanda")
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
