@@ -12,6 +12,7 @@
 		0F4721EE1E655FD200A6019A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F4721EC1E655FD200A6019A /* Main.storyboard */; };
 		0F4721F01E655FD200A6019A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F4721EF1E655FD200A6019A /* Assets.xcassets */; };
 		0F4721F31E655FD200A6019A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F4721F11E655FD200A6019A /* LaunchScreen.storyboard */; };
+		0FE48B171E66A98D00EA9A6F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE48B161E66A98D00EA9A6F /* Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		0F4721EF1E655FD200A6019A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0F4721F21E655FD200A6019A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0F4721F41E655FD200A6019A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0FE48B161E66A98D00EA9A6F /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		0F4721E71E655FD200A6019A /* Youtube */ = {
 			isa = PBXGroup;
 			children = (
+				0FE48B151E66A97300EA9A6F /* Helpers */,
 				0F4721E81E655FD200A6019A /* AppDelegate.swift */,
 				0F4721EA1E655FD200A6019A /* ViewController.swift */,
 				0F4721EF1E655FD200A6019A /* Assets.xcassets */,
@@ -62,6 +65,14 @@
 				0F4721F41E655FD200A6019A /* Info.plist */,
 			);
 			path = Youtube;
+			sourceTree = "<group>";
+		};
+		0FE48B151E66A97300EA9A6F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0FE48B161E66A98D00EA9A6F /* Extension.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FE48B171E66A98D00EA9A6F /* Extension.swift in Sources */,
 				0F4721EB1E655FD200A6019A /* ViewController.swift in Sources */,
 				0F4721E91E655FD200A6019A /* AppDelegate.swift in Sources */,
 			);
@@ -302,6 +314,7 @@
 				0F4721F91E655FD200A6019A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

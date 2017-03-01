@@ -9,19 +9,27 @@
 import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
-    
+ 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "Home"
-        collectionView?.backgroundColor = .white
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: (navigationController?.navigationBar.frame.width)! - 32, height: (navigationController?.navigationBar.frame.height)!))
+        label.text = "Home"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 20)
+        navigationItem.titleView = label
         
+        navigationController?.navigationBar.isTranslucent = false
+        
+        collectionView?.backgroundColor = .white
         collectionView?.register(VideoCell.self, forCellWithReuseIdentifier: "cellID" )
         
     }
-
+    
+ 
+    
+    //MARK: - UICollectionViewDelegateFlowLayout
  
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 5
@@ -34,13 +42,17 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.size.width, height: 200)
+        
+        let height = (view.frame.size.width - 16 - 16) * 9 / 16
+        
+        return CGSize(width: view.frame.size.width, height: height + 16 + 68)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
 
+    
 }
 
 class VideoCell: UICollectionViewCell {
@@ -55,34 +67,38 @@ class VideoCell: UICollectionViewCell {
     
     let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .blue
         imageView.image = UIImage(named: "Amanda")
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
     let separateView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = UIColor(colorLiteralRed: 230/255, green: 230/255, blue: 230/255, alpha: 1)
         return view
     }()
     
     let userProfileImageView: UIView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .green
+        imageView.image = UIImage(named: "Amanda1")
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 22
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .purple
+        label.text = "Amanda Cerny - Alissa Violet"
         return label
     }()
     
     let subtitleTextView: UITextView = {
-    
         let textView = UITextView()
-        textView.backgroundColor = .red
+        textView.text = "AmandaCerny ⍣ 1,747,874,900 views ✦ 2 years ago Amanda Cerny Sexy"
+        textView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        textView.textColor = .lightGray
         return textView
     }()
   
@@ -115,9 +131,9 @@ class VideoCell: UICollectionViewCell {
             titleLabel.heightAnchor.constraint(equalToConstant: 20),
             titleLabel.rightAnchor.constraint(equalTo: thumbnailImageView.rightAnchor, constant: 0),
             
-            subtitleTextView.leadingAnchor.constraint(equalTo: userProfileImageView.trailingAnchor, constant: 8),
+            subtitleTextView.leadingAnchor.constraint(equalTo: userProfileImageView.trailingAnchor, constant: 4),
             subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            subtitleTextView.heightAnchor.constraint(equalToConstant: 20),
+            subtitleTextView.heightAnchor.constraint(equalToConstant: 30),
             subtitleTextView.rightAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: 0)
     
             ])
