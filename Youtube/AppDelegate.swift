@@ -25,7 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = UIColor.rgb(red: 230, green: 32, blue: 31)
         UIApplication.shared.statusBarStyle = .lightContent
         
+        // get rid of black bar underneath navbar
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         
+        // сделаем статус бар другим цветом
         let backgroundStatusView = UIView()
         backgroundStatusView.backgroundColor = UIColor.rgb(red: 194, green: 31, blue: 31)
         backgroundStatusView.translatesAutoresizingMaskIntoConstraints = false

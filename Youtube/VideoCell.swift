@@ -1,68 +1,75 @@
 //
-//  ViewController.swift
+//  VideoCell.swift
 //  Youtube
 //
-//  Created by Kanat A on 28/02/2017.
+//  Created by Kanat A on 01/03/2017.
 //  Copyright © 2017 ak. All rights reserved.
 //
 
 import UIKit
 
-class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
- 
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: (navigationController?.navigationBar.frame.width)! - 32, height: (navigationController?.navigationBar.frame.height)!))
-        label.text = "Home"
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20)
-        navigationItem.titleView = label
-        
-        navigationController?.navigationBar.isTranslucent = false
-        
-        collectionView?.backgroundColor = .white
-        collectionView?.register(VideoCell.self, forCellWithReuseIdentifier: "cellID" )
-        
-    }
-    
- 
-    
-    //MARK: - UICollectionViewDelegateFlowLayout
- 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as!  VideoCell
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let height = (view.frame.size.width - 16 - 16) * 9 / 16
-        
-        return CGSize(width: view.frame.size.width, height: height + 16 + 68)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-
-    
-}
-
-class VideoCell: UICollectionViewCell {
+class BaseCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
     }
     
+    func setupViews() {
+    
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+class VideoCell: BaseCell {
+
+    //MARK: - Properties
+    
+    var heightTitle: CGFloat = 20
+    
+    var video: Video? {
+        didSet {
+            titleLabel.text = video?.title
+            
+            //thumbnailImageView.image = UIImage(named: (video?.thumbnailImageName)!)
+            
+            if let thumbnailImageName = video?.thumbnailImageName {
+                thumbnailImageView.image = UIImage(named: thumbnailImageName)
+            }
+            
+            
+            if let profileImageName = video?.channel?.profileImageName {
+                userProfileImageView.image = UIImage(named: profileImageName)
+            }
+            
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            
+            if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
+                let subtitletext = "\(channelName) ◆ \(numberFormatter.string(from: numberOfViews)!) ◆ 2 years ago"
+                subtitleTextView.text = subtitletext
+            }
+        
+            // measure title text
+            if let title = video?.title {
+                
+                let size = CGSize(width: frame.width - 16 - 44 - 8 - 16, height: 1000)
+                let options = NSStringDrawingOptions.usesLineFragmentOrigin.union(.usesFontLeading)
+                
+                let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
+                
+                if estimatedRect.size.height > 20  {
+                    titleLabelHeightConstraint?.constant = 44
+                } else {
+                    titleLabelHeightConstraint?.constant = 20
+                }
+            }
+            
+        }
     }
     
     let thumbnailImageView: UIImageView = {
@@ -79,7 +86,7 @@ class VideoCell: UICollectionViewCell {
         return view
     }()
     
-    let userProfileImageView: UIView = {
+    let userProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Amanda1")
         imageView.contentMode = .scaleAspectFill
@@ -91,6 +98,10 @@ class VideoCell: UICollectionViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Amanda Cerny - Alissa Violet"
+        label.numberOfLines = 2
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.allowsDefaultTighteningForTruncation = true
         return label
     }()
     
@@ -101,7 +112,20 @@ class VideoCell: UICollectionViewCell {
         textView.textColor = .lightGray
         return textView
     }()
-  
+    
+     var titleLabelHeightConstraint: NSLayoutConstraint?
+    
+    //MARK:- Init
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func addCustomConstrains() {
         
         thumbnailImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -116,7 +140,7 @@ class VideoCell: UICollectionViewCell {
             thumbnailImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             thumbnailImageView.bottomAnchor.constraint(equalTo: userProfileImageView.topAnchor, constant: -8),
             
-            separateView.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor, constant: 16),
+            separateView.topAnchor.constraint(equalTo: userProfileImageView.bottomAnchor, constant: 36),
             separateView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             separateView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             separateView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
@@ -128,55 +152,26 @@ class VideoCell: UICollectionViewCell {
             
             titleLabel.leadingAnchor.constraint(equalTo: userProfileImageView.trailingAnchor, constant: 8),
             titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8),
-            titleLabel.heightAnchor.constraint(equalToConstant: 20),
             titleLabel.rightAnchor.constraint(equalTo: thumbnailImageView.rightAnchor, constant: 0),
             
             subtitleTextView.leadingAnchor.constraint(equalTo: userProfileImageView.trailingAnchor, constant: 4),
             subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
             subtitleTextView.heightAnchor.constraint(equalToConstant: 30),
             subtitleTextView.rightAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: 0)
-    
             ])
+        
+       titleLabelHeightConstraint = titleLabel.heightAnchor.constraint(equalToConstant: 20)
     }
     
-    func setupViews() {
+    override func setupViews() {
+        super.setupViews()
+        
         addSubview(thumbnailImageView)
         addSubview(separateView)
         addSubview(userProfileImageView)
         addSubview(titleLabel)
         addSubview(subtitleTextView)
         addCustomConstrains()
-      }
+    }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
