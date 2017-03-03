@@ -35,16 +35,8 @@ class VideoCell: BaseCell {
         didSet {
             titleLabel.text = video?.title
             
-            //thumbnailImageView.image = UIImage(named: (video?.thumbnailImageName)!)
-            
-            if let thumbnailImageName = video?.thumbnailImageName {
-                thumbnailImageView.image = UIImage(named: thumbnailImageName)
-            }
-            
-            
-            if let profileImageName = video?.channel?.profileImageName {
-                userProfileImageView.image = UIImage(named: profileImageName)
-            }
+            setupThumbnailImage()
+            setupProfileImage()
             
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
@@ -69,6 +61,19 @@ class VideoCell: BaseCell {
                 }
             }
             
+        }
+    }
+    
+    func setupProfileImage() {
+        if let profileImageUrl = video?.channel?.profileImageName {
+             userProfileImageView.loadImageUsingUrlString(urlString: profileImageUrl)
+        }
+        
+    }
+    
+    func setupThumbnailImage() {
+        if let tnumbnailImageUrl = video?.thumbnailImageName {
+            thumbnailImageView.loadImageUsingUrlString(urlString: tnumbnailImageUrl)
         }
     }
     

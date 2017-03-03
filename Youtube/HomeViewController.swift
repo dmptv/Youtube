@@ -10,32 +10,11 @@ import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    // Data Source
-    /*
-    var videos: [Video] = {
-        
-        var amandaChannel = Channel()
-        amandaChannel.name = "AmandaTheBestChannel"
-        amandaChannel.profileImageName = "Aroa1"
-        
-        var blancSpaceVideo = Video()
-        blancSpaceVideo.title = "Amanda Cerny - Alissa Violet"
-        blancSpaceVideo.thumbnailImageName = "Amanda"
-        blancSpaceVideo.channel = amandaChannel
-        blancSpaceVideo.numberOfViews = 8848477599022
-        
-        var badBloodVideo = Video()
-        badBloodVideo.title = "Victoria Moskovichenko - Victoria Moskovichenko Aroa Ramirez Amanda Cerny"
-        badBloodVideo.thumbnailImageName = "Vik1"
-        badBloodVideo.channel = amandaChannel
-        badBloodVideo.numberOfViews = 82626399171726
- 
-        return [blancSpaceVideo, badBloodVideo]
-    }() */
-    
     var videos: [Video]?
     
     func fetchVideos() {
+        
+        // pars json
         
         if let url = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json") {
             URLSession.shared.dataTask(with: url) { (data, responce, error) in
@@ -54,8 +33,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                         
                         let video = Video()
                         video.title = dictionary["title"] as? String
-                        self.videos?.append(video)
+                        video.thumbnailImageName = dictionary["thumbnail_image_name"] as? String
                         
+                        let channelDictionary = dictionary["channel"] as! [String: AnyObject]
+                        
+                        let channel = Channel()
+                        channel.name = channelDictionary["name"] as? String
+                        channel.profileImageName = channelDictionary["profile_image_name"] as? String
+                        
+                        video.channel = channel
+                        
+                        self.videos?.append(video)
+                                                
                         DispatchQueue.main.async {
                             self.collectionView?.reloadData()
                         }
@@ -65,7 +54,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 } catch let jsonError {
                     print(jsonError)
                 }
-                
                 
                 
                 }.resume()
