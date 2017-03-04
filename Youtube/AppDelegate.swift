@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         
-        // сделаем статус бар другим цветом
+        // сделаем статус бар темно - красным цветом
         let backgroundStatusView = UIView()
         backgroundStatusView.backgroundColor = UIColor.rgb(red: 194, green: 31, blue: 31)
         backgroundStatusView.translatesAutoresizingMaskIntoConstraints = false

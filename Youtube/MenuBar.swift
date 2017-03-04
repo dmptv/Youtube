@@ -40,6 +40,7 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
             collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             ])
         
+        // item по-умолчанию
         let indexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition() )
     
@@ -82,6 +83,8 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
 
 class MenuCell: BaseCell {
     
+    // alwaysTemplate - чтобы картинка была без цвета
+    
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "home")?.withRenderingMode(.alwaysTemplate)
@@ -90,6 +93,7 @@ class MenuCell: BaseCell {
         return iv
     }()
     
+    // меняем цвет когда селектед
     override var isHighlighted: Bool {
         didSet {
             imageView.tintColor = isHighlighted ? .white : UIColor.rgb(red: 91, green: 14, blue: 13)
@@ -107,7 +111,7 @@ class MenuCell: BaseCell {
         
         addSubview(imageView)
         NSLayoutConstraint.activate([
-             imageView.heightAnchor.constraint(equalToConstant: 28),
+            imageView.heightAnchor.constraint(equalToConstant: 28),
             imageView.widthAnchor.constraint(equalToConstant: 28),
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor)

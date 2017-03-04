@@ -87,6 +87,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //MARK: - Setup Bars
     
     fileprivate func setupNavBarButtons() {
+        
+        // alwaysOriginal - чтобы картинка была цветной
+        
         let searchImage = UIImage(named: "search_icon")?.withRenderingMode(.alwaysOriginal)
         let searchBarButtonItem = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(handleSearch))
         
@@ -94,9 +97,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.rightBarButtonItems = [moreButton,  searchBarButtonItem]
     }
     
+  
+    let settingLauncher = SettingLauncher()
+    
     func handleMore() {
-        print(123)
+        // show menu
+        settingLauncher.showSettings()
     }
+    
+
     
     func handleSearch() {
         print(123)

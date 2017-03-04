@@ -27,17 +27,27 @@ extension UIView {
     }
 }
 
-let imageCashe = NSCache<AnyObject, AnyObject>()
 
-extension UIImageView {
+ let imageCashe = NSCache<AnyObject, AnyObject>()
+
+class CustomImageView: UIImageView {
+
+    var imageUrlString: String?
 
     func loadImageUsingUrlString(urlString: String) {
+        
+        imageUrlString = urlString
+        
         let url = URL(string: urlString)
         
         image = nil
         
         if let imageFromCashe = imageCashe.object(forKey: urlString as AnyObject) as? UIImage {
-            self.image = imageFromCashe
+            
+            DispatchQueue.main.async {
+              self.image = imageFromCashe
+            }
+            
             return
         } 
         
@@ -48,9 +58,14 @@ extension UIImageView {
             }
             
             DispatchQueue.main.async {
-                let imageToCashe = UIImage(data: data!)
-                imageCashe.setObject(imageToCashe!, forKey: urlString as AnyObject)
-                self.image =  imageToCashe
+                 let imageToCashe = UIImage(data: data!)
+                
+                // чтобы в ячейку не приходила чужая картинка
+                if self.imageUrlString == urlString {
+                    imageCashe.setObject(imageToCashe!, forKey: urlString as AnyObject)
+                }
+                  
+                self.image = imageToCashe
             }
             
         }).resume()
