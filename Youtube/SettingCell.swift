@@ -20,9 +20,19 @@ class SettingCell: BaseCell {
         }
     }
     
+    override var isSelected: Bool {
+        didSet {
+            backgroundColor = isSelected ? .darkGray : .white
+            
+            nameLabel.textColor = isSelected ? .black : .white
+            
+            iconImageView.tintColor = isSelected ? .white : .black
+        }
+    }
+    
     var setting: Setting? {
         didSet {
-            nameLabel.text = setting?.name
+            nameLabel.text = setting?.name.rawValue
             
             if let imageName = setting?.imageName {
                  // цвет картинки по умолчанию

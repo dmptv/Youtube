@@ -17,6 +17,7 @@ extension UIColor {
 extension UIView {
     func addConstraintsWithFormat(_ format: String, views: UIView...) {
         var viewsDictionary = [String: UIView]()
+        
         for (index, view) in views.enumerated() {
             let key = "v\(index)"
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -31,11 +32,9 @@ extension UIView {
  let imageCashe = NSCache<AnyObject, AnyObject>()
 
 class CustomImageView: UIImageView {
-
     var imageUrlString: String?
 
     func loadImageUsingUrlString(urlString: String) {
-        
         imageUrlString = urlString
         
         let url = URL(string: urlString)

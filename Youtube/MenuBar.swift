@@ -11,7 +11,6 @@ import UIKit
 class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
     // Properties
-    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -25,7 +24,8 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
     let cellID = "cellID"
     let imageNames = ["home", "trending", "subscriptions", "account"]
     
-    //Init View
+    // homeController будет вместо делагата
+    var homeController: HomeController?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,20 +43,54 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
         // item по-умолчанию
         let indexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition() )
+        
+        setupHorizontalBar()
+    }
     
+    var horizontalLeftAnchor: NSLayoutConstraint?
+    
+    func setupHorizontalBar() {
+        let horizontalBarView = UIView()
+        horizontalBarView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        horizontalBarView.translatesAutoresizingMaskIntoConstraints =  false
+        
+        addSubview(horizontalBarView)
+        horizontalLeftAnchor = horizontalBarView.leftAnchor.constraint(equalTo: self.leftAnchor)
+        horizontalLeftAnchor?.isActive = true
+        
+        NSLayoutConstraint.activate([
+            horizontalBarView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            horizontalBarView.widthAnchor.constraint(equalTo: self.widthAnchor , multiplier: 1/4),
+            horizontalBarView.heightAnchor.constraint(equalToConstant: 8)
+            ])
     }
     
     //MARK: - UICollectionViewDataSource
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+//        let x = (CGFloat)(indexPath.item) * frame.width / 4
+//        horizontalLeftAnchor?.constant = x
+//        
+//        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+//            self.layoutIfNeeded()
+//            
+//        }, completion: nil)
+   
+        // homeController как делегат вызовет функцию для menuBar
+        // при тапе на item в menuBar сдвигаем item HomeVC - ра на этот item
+        homeController?.scrollToMenuIndex(menuIndex: indexPath.item)
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! MenuCell
         cell.imageView.image = UIImage(named: imageNames[indexPath.item])?.withRenderingMode(.alwaysTemplate)
         cell.tintColor = UIColor.rgb(red: 91, green: 14, blue: 13)
-        
         
          return cell
     }
@@ -72,6 +106,7 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
     }
     
     
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -84,7 +119,6 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
 class MenuCell: BaseCell {
     
     // alwaysTemplate - чтобы картинка была без цвета
-    
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "home")?.withRenderingMode(.alwaysTemplate)

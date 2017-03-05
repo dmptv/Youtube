@@ -9,13 +9,22 @@
 import UIKit
 
 class Setting: NSObject {
-    let name: String
+    let name: SettingName
     let imageName: String
     
-    init(name: String, imageName: String) {
+    init(name: SettingName, imageName: String) {
         self.name = name
         self.imageName = imageName
     }
+}
+
+enum SettingName: String {
+    case Cancel = "Cancel & Dismiss Completely"
+    case Setting = "Setting"
+    case Terms = "Terms & privacy policy"
+    case Feedback = "send feedback"
+    case Help = "help"
+    case Account = "Switch Account"
 }
 
 class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -33,19 +42,23 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     let cellHeight: CGFloat = 50
     
     // Data Source
-    
     let settingsArray: [Setting] = {
-         return [Setting(name: "Setting", imageName: "settings"), Setting(name: "Terms & privacy policy", imageName: "privacy"), Setting(name: "send feedback", imageName: "feedback"), Setting(name: "Help", imageName: "help"), Setting(name: "Switch Account", imageName: "switch_account"), Setting(name: "Cancel", imageName: "cancel")]
+        let setting = Setting(name: .Setting, imageName: "settings")
+        
+         return [setting, Setting(name: .Terms, imageName: "privacy"), Setting(name: .Feedback, imageName: "feedback"), Setting(name: .Help, imageName: "help"), Setting(name: .Account, imageName: "switch_account"), Setting(name: .Cancel, imageName: "cancel")]
     }()
+    
+    // homeVC как делегат
+    var homeController: HomeController?
     
     //MARK: - Functions
     
     func showSettings() {
         // полупрозрачное вью
-        
         if let window = UIApplication.shared.keyWindow {
             
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+            
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
             
             window.addSubview(blackView)
@@ -70,18 +83,29 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         
     }
     
-    func handleDismiss() {
-        UIView.animate(withDuration: 0.5) {
+    func handleDismiss(setting: Setting) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.blackView.alpha = 0
             
             if let window = UIApplication.shared.keyWindow {
-                
                 self.collectionView.frame = CGRect(x: 0, y: window.frame.height, width: self.collectionView.frame.width, height: self.collectionView.frame.width)
+            }
+            
+        }) { (completion: Bool) in
+            // перейдем на новый VC
+            if setting.name != .Cancel {
+                // исп вместо протокола, передаем делегату вызов функции
+                self.homeController?.showControllerForSetting(setting: setting)
             }
         }
     }
     
     //MARK: - UICollectionViewDataSource
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let setting = self.settingsArray[indexPath.item]
+        handleDismiss(setting: setting)
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return settingsArray.count
@@ -89,7 +113,6 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! SettingCell
-        
         cell.setting = settingsArray[indexPath.item]
         
         return cell
@@ -104,7 +127,7 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-    
+
     override init() {
         super.init()
         
@@ -112,6 +135,10 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         collectionView.dataSource = self
         
         collectionView.register(SettingCell.self, forCellWithReuseIdentifier: cellID)
+    }
+    
+    deinit {
+        print("\(homeController) setting Launcher is being deinit")
     }
     
 }
