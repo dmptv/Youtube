@@ -19,14 +19,10 @@ class FeedCell: BaseCell, UICollectionViewDelegate, UICollectionViewDataSource, 
         return cv
     }()
     
-    
     var videos: [Video]?
-    
     let cellID = "cellID"
     
-    
     func fetchVideos() {
-        // pars json
         ApiService.sharedInstance.fetchVideos { (videos: [Video]) in
             self.videos = videos
             self.collectionView.reloadData()
@@ -45,9 +41,7 @@ class FeedCell: BaseCell, UICollectionViewDelegate, UICollectionViewDataSource, 
         addConstraintsWithFormat("H:|[v0]|", views: collectionView)
         addConstraintsWithFormat("V:|[v0]|", views: collectionView)
         
-        // VideoCell - это items в каждой FeedCell
         collectionView.register(VideoCell.self, forCellWithReuseIdentifier: cellID)
-        
     }
     
     override func layoutSubviews() {

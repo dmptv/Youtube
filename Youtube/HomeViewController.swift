@@ -11,6 +11,9 @@ import UIKit
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
  
     let cellID = "cellID"
+    let trendingCellID = "trendingCellID"
+    let subscriptionsCellID = "subscriptionsCellID"
+    
     let titles = ["Home", "Trending", "Subscriptions", "Account"]
     
     //MARK: -  Вместо подписок на протокол 
@@ -30,7 +33,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return mb
     }()
     
-    //View Life Circle
+    //MARK: - View Life Circle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
   
@@ -57,6 +61,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         collectionView?.backgroundColor = .white
         collectionView?.register(FeedCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView?.register(TrendingCell.self, forCellWithReuseIdentifier: trendingCellID)
+        collectionView?.register(SubscriptionsCell.self, forCellWithReuseIdentifier: subscriptionsCellID)
         
         collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50, 0, 0, 0)
@@ -172,7 +178,17 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
+        
+        let identifier: String
+        if indexPath.item == 1 {
+            identifier = trendingCellID
+        } else if indexPath.item == 2   {
+            identifier = subscriptionsCellID
+        } else {
+            identifier = cellID 
+        }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
         
         return cell
     }
@@ -195,6 +211,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
     private func updateCollectionViewLayout(with size: CGSize) {
         
+        // сделал для примера
         let itemSizeForPortraitMode = CGSize(width: view.frame.width, height: view.frame.height - 50)
         let itemSizeForLandscapeMode = CGSize(width: view.frame.width, height: view.frame.height - 50)
         

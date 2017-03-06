@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F0DE0011E6D2F9C0003DBCC /* TrendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0DE0001E6D2F9C0003DBCC /* TrendingCell.swift */; };
+		0F0DE0031E6D35940003DBCC /* SubscriptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0DE0021E6D35940003DBCC /* SubscriptionsCell.swift */; };
 		0F0FF74D1E6701D700A70971 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0FF74C1E6701D700A70971 /* VideoCell.swift */; };
 		0F0FF7501E67076C00A70971 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0FF74F1E67076C00A70971 /* MenuBar.swift */; };
 		0F10C5361E6BEB490057EB4B /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F10C5351E6BEB490057EB4B /* ApiService.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F0DE0001E6D2F9C0003DBCC /* TrendingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingCell.swift; sourceTree = "<group>"; };
+		0F0DE0021E6D35940003DBCC /* SubscriptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsCell.swift; sourceTree = "<group>"; };
 		0F0FF74C1E6701D700A70971 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		0F0FF74F1E67076C00A70971 /* MenuBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		0F10C5351E6BEB490057EB4B /* ApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
@@ -58,6 +62,8 @@
 				0F0FF74F1E67076C00A70971 /* MenuBar.swift */,
 				0F135B811E6AC14600B64BDE /* SettingCell.swift */,
 				0F10C5371E6C413C0057EB4B /* FeedCell.swift */,
+				0F0DE0001E6D2F9C0003DBCC /* TrendingCell.swift */,
+				0F0DE0021E6D35940003DBCC /* SubscriptionsCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -203,6 +209,8 @@
 			files = (
 				0F135B621E6958BF00B64BDE /* SettingLauncher.swift in Sources */,
 				0F10C5381E6C413D0057EB4B /* FeedCell.swift in Sources */,
+				0F0DE0031E6D35940003DBCC /* SubscriptionsCell.swift in Sources */,
+				0F0DE0011E6D2F9C0003DBCC /* TrendingCell.swift in Sources */,
 				0FE48B171E66A98D00EA9A6F /* Extension.swift in Sources */,
 				0F135B821E6AC14600B64BDE /* SettingCell.swift in Sources */,
 				0F135B491E68002A00B64BDE /* Video.swift in Sources */,
