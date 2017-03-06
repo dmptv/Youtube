@@ -10,7 +10,8 @@ import UIKit
 
 class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
-    // Properties
+    //MARK: - Properties
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -26,6 +27,8 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
     
     // homeController будет вместо делагата
     var homeController: HomeController?
+    
+    //MARK: - View Life Circle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,6 +48,13 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition() )
         
         setupHorizontalBar()
+        
+    }
+    
+    override func layoutSubviews() {
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.invalidateLayout();
+        }
     }
     
     var horizontalLeftAnchor: NSLayoutConstraint?
@@ -104,15 +114,12 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-    
-    
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
- 
-}
 
+}
 
     //MARK: - Setup MenuCell
 
@@ -151,6 +158,8 @@ class MenuCell: BaseCell {
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
             ])
     }
+    
+    
     
 }
 

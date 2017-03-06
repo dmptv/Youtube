@@ -9,18 +9,9 @@
 import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
-    var videos: [Video]?
-    
+ 
     let cellID = "cellID"
-    
-    func fetchVideos() {
-        // pars json
-        ApiService.sharedInstance.fetchVideos { (videos: [Video]) in
-            self.videos = videos
-            self.collectionView?.reloadData()
-        }
-    }
+    let titles = ["Home", "Trending", "Subscriptions", "Account"]
     
     //MARK: -  Вместо подписок на протокол 
     
@@ -42,9 +33,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //View Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fetchVideos()
-        
+  
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: (navigationController?.navigationBar.frame.width)! - 32, height: (navigationController?.navigationBar.frame.height)!))
         titleLabel.text = " Home"
         titleLabel.textColor = .white
@@ -53,22 +42,20 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.titleView = titleLabel
         
         navigationController?.navigationBar.isTranslucent = false
-
+        
         setupCollectionView()
         setupMenuBar()
         setupNavBarButtons()
     }
     
     fileprivate func setupCollectionView() {
+        
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumLineSpacing = 0
         }
         
         collectionView?.backgroundColor = .white
-        //collectionView?.register(VideoCell.self, forCellWithReuseIdentifier: "cellID" )
-//        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellID)
-        
         collectionView?.register(FeedCell.self, forCellWithReuseIdentifier: cellID)
         
         collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
@@ -104,6 +91,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         // back - сделаем белым тк у нав бар .alwaysTemplate
         navigationController?.navigationBar.tintColor = .white
+        
         // сменим  цвет title
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
@@ -118,8 +106,17 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func scrollToMenuIndex(menuIndex: Int) {
         let indexPath = IndexPath(item: menuIndex, section: 0)
-        // при свайпе меняем item по indexPath
+        
+        // при тапе в menuBar меняем item по indexPath
         collectionView?.scrollToItem(at: indexPath, at: [], animated: true)
+        
+        setTitleForIndex(index: menuIndex)
+    }
+    
+    fileprivate func setTitleForIndex(index: Int) {
+        if let titleLabel = navigationItem.titleView as? UILabel {
+            titleLabel.text = " \(titles[index])"
+        }
     }
     
     fileprivate func setupMenuBar() {
@@ -147,21 +144,28 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
     }
     
+    //MARK: - UIScrollViewDelegate
+    
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
         // чтобы horizontalBarView смещалась когда свайпаем вьюшки 
+        
         menuBar.horizontalLeftAnchor?.constant = scrollView.contentOffset.x / 4
     }
     
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
+        // делим 1242 на 414 = получим индекс
         let index = targetContentOffset.pointee.x / view.frame.width
         
         let indexPath = IndexPath(item: Int(index), section: 0)
         
         // чтобы подсвечивались items в menuBar
         menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+  
+        setTitleForIndex(index: Int(index))
     }
+    
+    //MARK: - UICollectionViewDataSource
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 4
@@ -173,43 +177,35 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return cell
     }
     
+    //MARK: - UICollectionViewDelegateFlowLayout
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height)
+        return CGSize(width: view.frame.width, height: view.frame.height - 50)
     }
  
-    //MARK: - UICollectionViewDataSource
- 
-//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return videos?.count ?? 0
-//    }
-//
-//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as!  VideoCell
-//        cell.video = videos?[indexPath.item]
-//        return cell
-//    }
-//    
-//    //MARK: - UICollectionViewDelegateFlowLayout
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let height = (view.frame.size.width - 16 - 16) * 9 / 16
-//        return CGSize(width: view.frame.size.width, height: height + 16 + 88)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 0
-//    }
-//    
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        DispatchQueue.main.async {
-//            self.collectionView?.collectionViewLayout.invalidateLayout()
-//        }
-//    }
 
     deinit {
         print("\(settingLauncher) homeVC is being deinit")
     }
- 
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        updateCollectionViewLayout(with: size)
+    }
+
+    private func updateCollectionViewLayout(with size: CGSize) {
+        
+        let itemSizeForPortraitMode = CGSize(width: view.frame.width, height: view.frame.height - 50)
+        let itemSizeForLandscapeMode = CGSize(width: view.frame.width, height: view.frame.height - 50)
+        
+        if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.itemSize = ((size.width < size.height) ? itemSizeForPortraitMode : itemSizeForLandscapeMode)
+            layout.invalidateLayout()
+        }
+    }
+
+
+
     
 }
 

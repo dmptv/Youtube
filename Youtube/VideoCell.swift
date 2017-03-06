@@ -178,4 +178,15 @@ class VideoCell: BaseCell {
         addCustomConstrains()
     }
     
+    func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        DispatchQueue.main.async {
+            self.layoutIfNeeded()
+        }
+    }
 }
+
+
+
+
+
+

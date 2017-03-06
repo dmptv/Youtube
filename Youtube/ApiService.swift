@@ -12,7 +12,7 @@ class ApiService: NSObject {
     
     static let sharedInstance = ApiService()
     
-    func fetchVideos(completion: @escaping ([Video]) -> ()) {
+    func fetchVideos(completion: @escaping ([Video])->() ) {
         if let url = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json") {
             URLSession.shared.dataTask(with: url) { (data, responce, error) in
                 
@@ -58,3 +58,8 @@ class ApiService: NSObject {
         
     }
 }
+
+
+
+
+
