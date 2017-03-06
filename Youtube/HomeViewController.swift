@@ -16,8 +16,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     let titles = ["Home", "Trending", "Subscriptions", "Account"]
     
-    //MARK: -  Вместо подписок на протокол 
-    
     // чтобы settingLauncher исп homeController как делегат
     lazy var settingLauncher: SettingLauncher = {
         let launcher = SettingLauncher()
@@ -77,6 +75,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let searchBarButtonItem = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(handleSearch))
         
         let moreButton = UIBarButtonItem(image: UIImage(named: "nav_more_icon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleMore))
+        
         navigationItem.rightBarButtonItems = [moreButton,  searchBarButtonItem]
     }
     
@@ -88,7 +87,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     
     // здесь HomeVC как делегат вызывает функцию по запросу settingLauncher
-    
     func showControllerForSetting(setting: Setting) {
         
         let dummyVc = UIViewController()
@@ -109,8 +107,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     // здесь HomeVC как делегат вызывает функцию по запросу menuBar
-    
-    func scrollToMenuIndex(menuIndex: Int) {
+        func scrollToMenuIndex(menuIndex: Int) {
+            
         let indexPath = IndexPath(item: menuIndex, section: 0)
         
         // при тапе в menuBar меняем item по indexPath
@@ -153,8 +151,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //MARK: - UIScrollViewDelegate
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // чтобы horizontalBarView смещалась когда свайпаем вьюшки 
         
+        // чтобы horizontalBarView смещалась когда свайпаем вьюшки 
         menuBar.horizontalLeftAnchor?.constant = scrollView.contentOffset.x / 4
     }
     

@@ -15,7 +15,7 @@ class ApiService: NSObject {
     let baseUrl = "https://s3-us-west-2.amazonaws.com/youtubeassets"
     
     func fetchVideos(completion: @escaping ([Video])->() ) {
-        fetchFeedForUrlString(urlString: "\(baseUrl)/home.json", completion: completion)
+        fetchFeedForUrlString(urlString: "\(baseUrl)/home_num_likes.json", completion: completion)
     }
     
     func fetchTrendingFeed(completion: @escaping ([Video])->() ) {
@@ -38,56 +38,37 @@ class ApiService: NSObject {
                 }
                 
                 do {
-                    let json =  try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
                     
-                    var videos = [Video]()
-                    
-                    for dictionary in json as! [[String: AnyObject]] {
-                        
-                        let video = Video()
-                        video.title = dictionary["title"] as? String
-                        video.thumbnailImageName = dictionary["thumbnail_image_name"] as? String
-                        
-                        let channelDictionary = dictionary["channel"] as! [String: AnyObject]
-                        
-                        let channel = Channel()
-                        channel.name = channelDictionary["name"] as? String
-                        channel.profileImageName = channelDictionary["profile_image_name"] as? String
-                        
-                        video.channel = channel
-                        
-                        videos.append(video)
-                        
+                    if let unwrappedData = data,  let jsonDictionaries =  try JSONSerialization.jsonObject(with: unwrappedData, options: .mutableContainers) as? [[String: AnyObject]] {
+
                         DispatchQueue.main.async {
-                            completion(videos)
+                            completion(jsonDictionaries.map({return Video(dictionary: $0)}))
                         }
-                        
                     }
                     
                 } catch let jsonError {
                     print(jsonError)
                 }
-                
-                
-                
                 }.resume()
         }
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
 
 }
+
+
+                             // просто как пример
+//                        let numbers = [1, 2, 3]
+//                        let doublesNumbersArray = numbers.map({return $0 * 2})
+//                        let stringsArray = numbers.map({return "\($0 * 2)"})
+//                        print(stringsArray)
+
+//                        var videos = [Video]()
+//
+//                        for dictionary in jsonDictionaries {
+//                            let video = Video(dictionary: dictionary)
+//                            videos.append(video)
+//                        }
 
 
 

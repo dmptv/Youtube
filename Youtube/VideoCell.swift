@@ -25,8 +25,6 @@ class BaseCell: UICollectionViewCell {
 
 
 class VideoCell: BaseCell {
-
-    //MARK: - Properties
     
     var heightTitle: CGFloat = 20
     
@@ -40,7 +38,8 @@ class VideoCell: BaseCell {
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
             
-            if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
+            if let channelName = video?.channel?.name, let numberOfViews = video?.number_of_views {
+                
                 let subtitletext = "\(channelName) ◆ \(numberFormatter.string(from: numberOfViews)!) ◆ 2 years ago"
                 subtitleTextView.text = subtitletext
             }
@@ -64,14 +63,13 @@ class VideoCell: BaseCell {
     }
     
     func setupProfileImage() {
-        if let profileImageUrl = video?.channel?.profileImageName {
+        if let profileImageUrl = video?.channel?.profile_image_name {
              userProfileImageView.loadImageUsingUrlString(urlString: profileImageUrl)
         }
-        
     }
     
     func setupThumbnailImage() {
-        if let tnumbnailImageUrl = video?.thumbnailImageName {
+        if let tnumbnailImageUrl = video?.thumbnail_image_name {
             thumbnailImageView.loadImageUsingUrlString(urlString: tnumbnailImageUrl)
         }
     }
@@ -119,7 +117,7 @@ class VideoCell: BaseCell {
     
      var titleLabelHeightConstraint: NSLayoutConstraint?
     
-    //MARK:- Init
+    // View Life Circle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -178,11 +176,7 @@ class VideoCell: BaseCell {
         addCustomConstrains()
     }
     
-    func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        DispatchQueue.main.async {
-            self.layoutIfNeeded()
-        }
-    }
+
 }
 
 

@@ -57,15 +57,20 @@ class FeedCell: BaseCell, UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as!  VideoCell
+        
         cell.video = videos?[indexPath.item]
+        
         return cell
     }
     
     //MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         let height = (frame.size.width - 16 - 16) * 9 / 16
+        
         return CGSize(width: frame.size.width, height: height + 16 + 88)
     }
     
