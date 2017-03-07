@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F05A31F1E6E876A00774051 /* VideoLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F05A31E1E6E876A00774051 /* VideoLauncher.swift */; };
 		0F0DE0011E6D2F9C0003DBCC /* TrendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0DE0001E6D2F9C0003DBCC /* TrendingCell.swift */; };
 		0F0DE0031E6D35940003DBCC /* SubscriptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0DE0021E6D35940003DBCC /* SubscriptionsCell.swift */; };
 		0F0FF74D1E6701D700A70971 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0FF74C1E6701D700A70971 /* VideoCell.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F05A31E1E6E876A00774051 /* VideoLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoLauncher.swift; sourceTree = "<group>"; };
 		0F0DE0001E6D2F9C0003DBCC /* TrendingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingCell.swift; sourceTree = "<group>"; };
 		0F0DE0021E6D35940003DBCC /* SubscriptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsCell.swift; sourceTree = "<group>"; };
 		0F0FF74C1E6701D700A70971 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				0FE48B161E66A98D00EA9A6F /* Extension.swift */,
+				0F05A31E1E6E876A00774051 /* VideoLauncher.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -214,6 +217,7 @@
 				0FE48B171E66A98D00EA9A6F /* Extension.swift in Sources */,
 				0F135B821E6AC14600B64BDE /* SettingCell.swift in Sources */,
 				0F135B491E68002A00B64BDE /* Video.swift in Sources */,
+				0F05A31F1E6E876A00774051 /* VideoLauncher.swift in Sources */,
 				0F0FF74D1E6701D700A70971 /* VideoCell.swift in Sources */,
 				0F10C5361E6BEB490057EB4B /* ApiService.swift in Sources */,
 				0F4721EB1E655FD200A6019A /* HomeViewController.swift in Sources */,

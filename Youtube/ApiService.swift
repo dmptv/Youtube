@@ -26,7 +26,7 @@ class ApiService: NSObject {
         fetchFeedForUrlString(urlString: "\(baseUrl)/subscriptions.json", completion: completion)
     }
     
-    func fetchFeedForUrlString(urlString: String, completion: @escaping ([Video])->()) {
+    func fetchFeedForUrlString(urlString: String, completion: @escaping ([Video])->() ) {
         
         if let url = URL(string: urlString) {
             
@@ -38,7 +38,6 @@ class ApiService: NSObject {
                 }
                 
                 do {
-                    
                     if let unwrappedData = data,  let jsonDictionaries =  try JSONSerialization.jsonObject(with: unwrappedData, options: .mutableContainers) as? [[String: AnyObject]] {
 
                         DispatchQueue.main.async {
@@ -55,6 +54,32 @@ class ApiService: NSObject {
     }
 
 }
+
+
+//let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+//
+//var videos = [Video]()
+//
+//for dictionary in json as! [[String: AnyObject]] {
+//
+//    let video = Video()
+//    video.title = dictionary["title"] as? String
+//    video.thumbnailImageName = dictionary["thumbnail_image_name"] as? String
+//
+//    let channelDictionary = dictionary["channel"] as! [String: AnyObject]
+//
+//    let channel = Channel()
+//    channel.name = channelDictionary["name"] as? String
+//    channel.profileImageName = channelDictionary["profile_image_name"] as? String
+//
+//    video.channel = channel
+//
+//    videos.append(video)
+//}
+//
+//dispatch_async(dispatch_get_main_queue(), {
+//    completion(videos)
+//})
 
 
                              // просто как пример

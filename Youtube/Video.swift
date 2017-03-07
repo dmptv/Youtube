@@ -21,6 +21,9 @@ class SafeJsonObject: NSObject {
         // у key заменяем первую букву на ее uppercased
         let selectorString = key.replacingCharacters(in: range, with: uppercasedFirstCharacter)
         
+//        let range = NSMakeRange(0, 1)
+//        let selectorString = NSString(string: key).replacingCharacters(in: range, with: uppercasedFirstCharacter)
+        
         // создаем селектор
         let selector = NSSelectorFromString("set\(selectorString):")
         
@@ -49,7 +52,6 @@ class Video: SafeJsonObject {
     // переопределим метод родителя - SafeJsonObject
     override func setValue(_ value: Any?, forKey key: String) {
         
-         // если проперти channel , то по другому его обработаем
         if key == "channel" {
             
               // custom channel setup
@@ -73,6 +75,14 @@ class Channel: SafeJsonObject {
     var name: String?
     var profile_image_name: String?
 }
+
+
+
+
+
+
+
+
 
 
 

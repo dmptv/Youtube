@@ -106,7 +106,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
     }
     
-    // здесь HomeVC как делегат вызывает функцию по запросу menuBar
+        // здесь HomeVC как делегат вызывает функцию по запросу menuBar
         func scrollToMenuIndex(menuIndex: Int) {
             
         let indexPath = IndexPath(item: menuIndex, section: 0)
@@ -114,6 +114,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         // при тапе в menuBar меняем item по indexPath
         collectionView?.scrollToItem(at: indexPath, at: [], animated: true)
         
+        // set Title 
         setTitleForIndex(index: menuIndex)
     }
     

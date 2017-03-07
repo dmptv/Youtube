@@ -56,8 +56,10 @@ class CustomImageView: UIImageView {
                 print(error?.localizedDescription ?? 0)
             }
             
+            if let unwrappedData = data {
+            
             DispatchQueue.main.async {
-                 let imageToCashe = UIImage(data: data!)
+                let imageToCashe = UIImage(data: unwrappedData)
                 
                 // чтобы в ячейку не приходила чужая картинка
                 if self.imageUrlString == urlString {
@@ -65,6 +67,7 @@ class CustomImageView: UIImageView {
                 }
                   
                 self.image = imageToCashe
+            }
             }
             
         }).resume()
