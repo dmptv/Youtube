@@ -31,6 +31,7 @@ class VideoPlayerView: UIView {
     
     var isPlaying = false
     
+    // пауза или play
     func handlePause() {
         if isPlaying {
             player?.pause()
@@ -43,17 +44,58 @@ class VideoPlayerView: UIView {
         isPlaying = !isPlaying
     }
     
+    // вью для элементов контрола
     let controlsContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0, alpha: 1)
         return view
     }()
+    
+    let videoLengthLabel: UILabel = {
+        let label = UILabel()
+        label.text = "00:00"
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .boldSystemFont(ofSize: 14)
+        label.textAlignment = .right
+        return label
+    }()
+    
+    let videoSlider: UISlider = {
+        let slider = UISlider()
+        slider.minimumTrackTintColor = .red
+        slider.maximumTrackTintColor = .white
+        slider.setThumbImage(UIImage(named: "thumb"), for: .normal)
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.addTarget(self, action: #selector(handleSliderChange), for: .valueChanged)
+        return slider
+    }()
+    
+    // прикрутим слайдер к видео
+    func handleSliderChange() {
+        
+        if let duration = player?.currentItem?.duration {
+            let totalSeconds = CMTimeGetSeconds(duration)
+            
+            // высчитаем соотношение слайдера и длины видео
+            let value = Float64(videoSlider.value) * totalSeconds
+            
+            // создадим время видео
+            let seekTime = CMTime(value: Int64(value), timescale: 1)
+            
+            // прокручиваем видео
+            player?.seek(to: seekTime, completionHandler: { (completedSeek) in
+                
+            })
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupPlayerView()
         
+        // чтобы controlsContainerView был выше добавим его после плэейра
         controlsContainerView.frame = frame
         addSubview(controlsContainerView)
         
@@ -69,19 +111,41 @@ class VideoPlayerView: UIView {
             pausePlayButton.heightAnchor.constraint(equalToConstant: 50)
             ])
         
+        controlsContainerView.addSubview(videoLengthLabel)
+        NSLayoutConstraint.activate([
+            videoLengthLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -8),
+            videoLengthLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            videoLengthLabel.widthAnchor.constraint(equalToConstant: 60),
+            videoLengthLabel.heightAnchor.constraint(equalToConstant: 24)
+            ])
+        
+        controlsContainerView.addSubview(videoSlider)
+        NSLayoutConstraint.activate([
+            videoSlider.rightAnchor.constraint(equalTo: videoLengthLabel.leftAnchor, constant: 0),
+            videoSlider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            videoSlider.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+            videoSlider.heightAnchor .constraint(equalToConstant: 30)
+            ])
+        
+        
         backgroundColor = .black
     }
     
     var player: AVPlayer?
     
+    // set AVPlayer
     fileprivate func setupPlayerView() {
         let urlString = "https://firebasestorage.googleapis.com/v0/b/videofortest-ba0fb.appspot.com/o/Coastline%20-%203581.mp4?alt=media&token=6dbab536-2bb4-4130-842d-06cab014b8a5"
         
         if let url = URL(string: urlString) {
             player = AVPlayer(url: url)
+            
+            // добавим как слой на вью
             let playerLayer = AVPlayerLayer(player: player)
             self.layer.addSublayer(playerLayer)
             playerLayer.frame = self.frame
+            
+            // чтобы знать когда видео готово к проигрыванию
             player?.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
             player?.play()
         }
@@ -92,30 +156,41 @@ class VideoPlayerView: UIView {
         // this is when the player is ready and rendering frames
         if keyPath == "currentItem.loadedTimeRanges" {
             activityIndicatorView.stopAnimating()
+            
+            // чтобы activityIndicatorView сразу исчез
             controlsContainerView.backgroundColor = .clear
+            
             pausePlayButton.isHidden = false
             isPlaying = true
+            
+            // выведем длину видео
+            if let duration = player?.currentItem?.duration {
+                let seconds = CMTimeGetSeconds(duration)
+                
+                // сделаем 2-х значные секунды и минуты
+                let minutesText = String(format: "%02d", Int(seconds) / 60)
+                let secondsText = String(format: "%02d", Int(seconds) % 60)
+                videoLengthLabel.text = "\(minutesText):\(secondsText)"
+            }
         }
-    
     }
     
- 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
 }
 
 class VideoLauncher: NSObject {
     
+    // основное вью
     func showVideoPlayer() {
         
         if let keyWindow = UIApplication.shared.keyWindow {
+            
             let view = UIView(frame: keyWindow.frame)
             view.backgroundColor = .white
             
+            // маленький фрэйм в углу
             view.frame = CGRect(x: keyWindow.frame.width - 10, y: keyWindow.frame.height - 10, width: 10, height: 10)
             
             // 16 x 9 is aspect ratio for all HD videos
@@ -126,6 +201,7 @@ class VideoLauncher: NSObject {
             
             keyWindow.addSubview(view)
             
+            // равзвернем на весь экран
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
                 view.frame = keyWindow.frame
