@@ -29,7 +29,7 @@ extension UIView {
 }
 
 
- let imageCashe = NSCache<AnyObject, AnyObject>()
+ let imageCashe = NSCache<NSString, UIImage>()
 
 class CustomImageView: UIImageView {
     var imageUrlString: String?
@@ -41,7 +41,7 @@ class CustomImageView: UIImageView {
         
         image = nil
         
-        if let imageFromCashe = imageCashe.object(forKey: urlString as AnyObject) as? UIImage {
+        if let imageFromCashe = imageCashe.object(forKey: (urlString as NSString)) {
             
             DispatchQueue.main.async {
               self.image = imageFromCashe
@@ -63,7 +63,7 @@ class CustomImageView: UIImageView {
                 
                 // чтобы в ячейку не приходила чужая картинка
                 if self.imageUrlString == urlString {
-                    imageCashe.setObject(imageToCashe!, forKey: urlString as AnyObject)
+                    imageCashe.setObject(imageToCashe!, forKey: urlString as NSString)
                 }
                   
                 self.image = imageToCashe
