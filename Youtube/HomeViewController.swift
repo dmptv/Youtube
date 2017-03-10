@@ -21,14 +21,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     lazy var settingLauncher: SettingLauncher = {
         let launcher = SettingLauncher()
-        launcher.homeController = self
+        weak var weakSelf = self
+        launcher.homeController = weakSelf
         return launcher
     }()
     
     lazy var menuBar: MenuBar = {
         let mb = MenuBar()
         mb.translatesAutoresizingMaskIntoConstraints = false
-        mb.homeController = self
+        weak var weakSelf = self
+        mb.homeController = weakSelf
         return mb
     }()
     
@@ -201,7 +203,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height - 50)
     }
- 
 
     deinit {
         print("\(settingLauncher) homeVC is being deinit")
@@ -228,7 +229,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         DispatchQueue.main.async {
             var indexToItem = IndexPath()
             
-            // we got index after tap or scroll
+            // we've got index after tap or scroll
             if let indTap = self.indexPathByTap {
                 indexToItem = indTap
             } else if let indScroll = self.indexPathByScroll {
@@ -243,35 +244,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
       
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -24,7 +24,7 @@ class SettingCell: BaseCell {
         didSet {
             backgroundColor = isSelected ? .darkGray : .white
             
-            nameLabel.textColor = isSelected ? .black : .white
+            nameLabel.textColor = isSelected ? .white : .black
             
             iconImageView.tintColor = isSelected ? .white : .black
         }
@@ -39,7 +39,6 @@ class SettingCell: BaseCell {
                 iconImageView.image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
                 iconImageView.tintColor = .black
             }
-            
         }
     }
     

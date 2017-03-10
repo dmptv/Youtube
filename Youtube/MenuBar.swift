@@ -25,7 +25,6 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
     let cellID = "cellID"
     let imageNames = ["home", "trending", "subscriptions", "account"]
     
-    // homeController будет вместо делагата
     var homeController: HomeController?
     
     //MARK: - View Life Circle
@@ -115,7 +114,6 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
 
 class MenuCell: BaseCell {
     
-    // alwaysTemplate - чтобы картинка была без цвета
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "home")?.withRenderingMode(.alwaysTemplate)

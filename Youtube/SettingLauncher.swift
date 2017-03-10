@@ -54,11 +54,10 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     //MARK: - Functions
     
     func showSettings() {
-        // полупрозрачное вью
         if let window = UIApplication.shared.keyWindow {
-            
+
+            // полупрозрачное вью
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
-            
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
             
             window.addSubview(blackView)
@@ -78,9 +77,7 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
                 
             }, completion: nil)
-            
         }
-        
     }
     
     func handleDismiss(setting: Setting) {
@@ -93,9 +90,8 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             }
             
         }) { (completion: Bool) in
-            // перейдем на новый VC
+            // goint to new VC
             if setting.name != .Cancel {
-                // исп вместо протокола, передаем делегату вызов функции
                 self.homeController?.showControllerForSetting(setting: setting)
             }
         }
@@ -104,6 +100,7 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     //MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
         
         let setting = self.settingsArray[indexPath.item]
         handleDismiss(setting: setting)
