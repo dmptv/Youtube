@@ -84,6 +84,7 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func handleDismiss(setting: Setting) {
+        
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.blackView.alpha = 0
             
@@ -103,6 +104,7 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     //MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         let setting = self.settingsArray[indexPath.item]
         handleDismiss(setting: setting)
     }
@@ -112,6 +114,7 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! SettingCell
         cell.setting = settingsArray[indexPath.item]
         
@@ -137,7 +140,7 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         collectionView.register(SettingCell.self, forCellWithReuseIdentifier: cellID)
     }
     
-    deinit {
+   deinit {
         print("\(homeController) setting Launcher is being deinit")
     }
     

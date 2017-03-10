@@ -37,7 +37,6 @@ class FeedCell: BaseCell, UICollectionViewDelegate, UICollectionViewDataSource, 
         backgroundColor = .brown
         
         addSubview(collectionView)
-        
         addConstraintsWithFormat("H:|[v0]|", views: collectionView)
         addConstraintsWithFormat("V:|[v0]|", views: collectionView)
         

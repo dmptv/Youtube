@@ -14,16 +14,17 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let trendingCellID = "trendingCellID"
     let subscriptionsCellID = "subscriptionsCellID"
     
+    var indexPathByTap: IndexPath?
+    var indexPathByScroll: IndexPath?
+    
     let titles = ["Home", "Trending", "Subscriptions", "Account"]
     
-    // чтобы settingLauncher исп homeController как делегат
     lazy var settingLauncher: SettingLauncher = {
         let launcher = SettingLauncher()
         launcher.homeController = self
         return launcher
     }()
     
-    // чтобы menuBar исп homeController как делегат
     lazy var menuBar: MenuBar = {
         let mb = MenuBar()
         mb.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +70,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     fileprivate func setupNavBarButtons() {
-        // alwaysOriginal - чтобы картинка была цветной
         
         let searchImage = UIImage(named: "search_icon")?.withRenderingMode(.alwaysOriginal)
         let searchBarButtonItem = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(handleSearch))
@@ -79,14 +79,20 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.rightBarButtonItems = [moreButton,  searchBarButtonItem]
     }
     
-    // Handles
+    //MARK: - Handles
+    
     func handleMore() {
         // show menu
         settingLauncher.showSettings()
     }
     
+    func handleSearch() {
+        
+    }
     
-    // здесь HomeVC как делегат вызывает функцию по запросу settingLauncher
+    //MARK: - Custom Delegate kind of calls
+    
+    // for settingLauncher
     func showControllerForSetting(setting: Setting) {
         
         let dummyVc = UIViewController()
@@ -102,19 +108,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.pushViewController(dummyVc, animated: true)
     }
 
-    func handleSearch() {
-        
-    }
-    
-        // здесь HomeVC как делегат вызывает функцию по запросу menuBar
-        func scrollToMenuIndex(menuIndex: Int) {
-            
-        let indexPath = IndexPath(item: menuIndex, section: 0)
+    // for menuBar
+    func scrollToMenuIndex(menuIndex: Int) {
         
         // при тапе в menuBar меняем item по indexPath
+        let indexPath = IndexPath(item: menuIndex, section: 0)
+        indexPathByTap = indexPath
+        indexPathByScroll = nil
         collectionView?.scrollToItem(at: indexPath, at: [], animated: true)
         
-        // set Title 
         setTitleForIndex(index: menuIndex)
     }
     
@@ -156,13 +158,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         // чтобы horizontalBarView смещалась когда свайпаем вьюшки 
         menuBar.horizontalLeftAnchor?.constant = scrollView.contentOffset.x / 4
     }
-    
+
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        // делим 1242 на 414 = получим индекс
+        // делим 800 на 200 = получим индекс
         let index = targetContentOffset.pointee.x / view.frame.width
-        
         let indexPath = IndexPath(item: Int(index), section: 0)
+        indexPathByScroll = indexPath
+        indexPathByTap = nil
         
         // чтобы подсвечивались items в menuBar
         menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
@@ -178,6 +181,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        // data source передается в самих cell поэтому можем так сократить код
         let identifier: String
         if indexPath.item == 1 {
             identifier = trendingCellID
@@ -203,6 +207,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         print("\(settingLauncher) homeVC is being deinit")
     }
     
+    //MARK: - Device Orientation
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         updateCollectionViewLayout(with: size)
@@ -210,7 +216,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
     private func updateCollectionViewLayout(with size: CGSize) {
         
-        // сделал для примера
+        // для примера
         let itemSizeForPortraitMode = CGSize(width: view.frame.width, height: view.frame.height - 50)
         let itemSizeForLandscapeMode = CGSize(width: view.frame.width, height: view.frame.height - 50)
         
@@ -218,11 +224,24 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             layout.itemSize = ((size.width < size.height) ? itemSizeForPortraitMode : itemSizeForLandscapeMode)
             layout.invalidateLayout()
         }
+        
+        DispatchQueue.main.async {
+            var indexToItem = IndexPath()
+            
+            // we got index after tap or scroll
+            if let indTap = self.indexPathByTap {
+                indexToItem = indTap
+            } else if let indScroll = self.indexPathByScroll {
+                indexToItem = indScroll
+            } else {
+                return
+            }
+
+            self.collectionView?.scrollToItem(at: indexToItem, at: .centeredHorizontally, animated: true)
+            self.collectionView?.reloadData()
+        }
+      
     }
-
-
-
-    
 }
 
 

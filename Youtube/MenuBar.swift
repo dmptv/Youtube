@@ -48,7 +48,6 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition() )
         
         setupHorizontalBar()
-        
     }
     
     override func layoutSubviews() {
@@ -78,17 +77,8 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
     //MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-//        let x = (CGFloat)(indexPath.item) * frame.width / 4
-//        horizontalLeftAnchor?.constant = x
-//        
-//        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-//            self.layoutIfNeeded()
-//            
-//        }, completion: nil)
-   
-        // homeController как делегат вызовет функцию для menuBar
-        // при тапе на item в menuBar сдвигаем item HomeVC - ра на этот item
+
+        // при тапе на item в menuBar сдвигаем item HomeVC на этот item
         homeController?.scrollToMenuIndex(menuIndex: indexPath.item)
     }
     

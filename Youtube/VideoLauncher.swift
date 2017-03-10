@@ -44,7 +44,7 @@ class VideoPlayerView: UIView {
         isPlaying = !isPlaying
     }
     
-    // main view для элементов контрола
+    // container view для элементов контрола
     let controlsContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0, alpha: 1)
@@ -228,11 +228,10 @@ class VideoPlayerView: UIView {
 
 class VideoLauncher: NSObject {
     
-    // основное вью
     func showVideoPlayer() {
-        
         if let keyWindow = UIApplication.shared.keyWindow {
             
+            // основное вью
             let view = UIView(frame: keyWindow.frame)
             view.backgroundColor = .white
             
