@@ -13,9 +13,7 @@ class SettingCell: BaseCell {
     override var isHighlighted: Bool {
         didSet {
             backgroundColor = isHighlighted ? .darkGray : .white
-            
             nameLabel.textColor = isHighlighted ? .white : .black
-            
             iconImageView.tintColor = isHighlighted ? .white : .black
         }
     }
@@ -23,9 +21,7 @@ class SettingCell: BaseCell {
     override var isSelected: Bool {
         didSet {
             backgroundColor = isSelected ? .darkGray : .white
-            
             nameLabel.textColor = isSelected ? .white : .black
-            
             iconImageView.tintColor = isSelected ? .white : .black
         }
     }
@@ -46,14 +42,13 @@ class SettingCell: BaseCell {
         let label = UILabel()
         label.text = "Setting"
         label.font = UIFont.systemFont(ofSize: 13)
-          label.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "settings")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -66,17 +61,14 @@ class SettingCell: BaseCell {
         NSLayoutConstraint.activate([
             nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
             nameLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor, constant: 0)
-       
             ])
+     
+        _ = iconImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nameLabel.leftAnchor, topConstant: 0, leftConstant: 8, bottomConstant: 0, rightConstant: -8, widthConstant: 30, heightConstant: 30)
         
         iconImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
-        iconImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
-        iconImageView.trailingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: -8).isActive = true
-        iconImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        iconImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
- 
     }
 }
+
 
 
 
