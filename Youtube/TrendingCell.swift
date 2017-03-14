@@ -16,4 +16,6 @@ class TrendingCell: FeedCell {
             self.collectionView.reloadData()
         }
     }
+    
+    // методы data source вызовятся у родителя
 }

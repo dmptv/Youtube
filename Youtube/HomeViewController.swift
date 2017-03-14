@@ -61,6 +61,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         
         collectionView?.backgroundColor = .white
+        
         collectionView?.register(FeedCell.self, forCellWithReuseIdentifier: cellID)
         collectionView?.register(TrendingCell.self, forCellWithReuseIdentifier: trendingCellID)
         collectionView?.register(SubscriptionsCell.self, forCellWithReuseIdentifier: subscriptionsCellID)
@@ -91,8 +92,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func handleSearch() {
         
     }
-    
-    //MARK: - Custom Delegate kind of calls
     
     // for settingLauncher
     func showControllerForSetting(setting: Setting) {
@@ -156,8 +155,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //MARK: - UIScrollViewDelegate
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        // чтобы horizontalBarView смещалась когда свайпаем вьюшки 
+        // чтобы horizontalBarView смещалась когда свайпаем вьюшки
         menuBar.horizontalLeftAnchor?.constant = scrollView.contentOffset.x / 4
     }
 
@@ -183,8 +181,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        // data source передается в самих cell поэтому можем так сократить код
+        // data source передается в самих cell
         let identifier: String
+        
         if indexPath.item == 1 {
             identifier = trendingCellID
         } else if indexPath.item == 2   {

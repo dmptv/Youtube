@@ -48,7 +48,6 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
          return [setting, Setting(name: .Terms, imageName: "privacy"), Setting(name: .Feedback, imageName: "feedback"), Setting(name: .Help, imageName: "help"), Setting(name: .Account, imageName: "switch_account"), Setting(name: .Cancel, imageName: "cancel")]
     }()
     
-    // homeVC как делегат
     var homeController: HomeController?
     
     //MARK: - Functions
@@ -73,7 +72,6 @@ class SettingLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
                 self.blackView.alpha = 1
-                
                 self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
                 
             }, completion: nil)

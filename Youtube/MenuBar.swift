@@ -76,7 +76,6 @@ class MenuBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UIC
     //MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
         // при тапе на item в menuBar сдвигаем item HomeVC на этот item
         homeController?.scrollToMenuIndex(menuIndex: indexPath.item)
     }
