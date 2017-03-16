@@ -32,6 +32,9 @@ class VideoCell: BaseCell {
         didSet {
             titleLabel.text = video?.title
             
+            // hard code
+            titleLabel.text = "Marvel's Iron Fist | Official Trailer [HD] | Netflix"
+            
             setupThumbnailImage()
             setupProfileImage()
             
@@ -66,13 +69,26 @@ class VideoCell: BaseCell {
     
     func setupProfileImage() {
         if let profileImageUrl = video?.channel?.profile_image_name {
-             userProfileImageView.loadImageUsingUrlString(urlString: profileImageUrl)
+            // userProfileImageView.loadImageUsingUrlString(urlString: profileImageUrl)
+            
+            // hard code
+            userProfileImageView.image = UIImage(named:  "kanye_profile")
         }
     }
     
     func setupThumbnailImage() {
         if let tnumbnailImageUrl = video?.thumbnail_image_name {
-            thumbnailImageView.loadImageUsingUrlString(urlString: tnumbnailImageUrl)
+            //thumbnailImageView.loadImageUsingUrlString(urlString: tnumbnailImageUrl)
+            
+            var flag = Int(arc4random() % 2)
+            if flag == 0 {
+                thumbnailImageView.image = UIImage(named: "Amanda1")
+                flag = 1
+            } else {
+                thumbnailImageView.image = UIImage(named: "Amanda")
+                flag = 0
+            }
+  
         }
     }
     
@@ -119,7 +135,7 @@ class VideoCell: BaseCell {
     
      var titleLabelHeightConstraint: NSLayoutConstraint?
     
-    // View Life Circle
+    //MARK: - View Life Circle
     
     override init(frame: CGRect) {
         super.init(frame: frame)

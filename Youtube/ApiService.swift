@@ -12,7 +12,7 @@ class ApiService: NSObject {
     
     static let sharedInstance = ApiService()
     
-    let baseUrl = "https://api.myjson.com/bins"
+    let baseUrl = "https://api.myjson.com/bins" 
     
     func fetchVideos(completion: @escaping ([Video])->() ) {
         fetchFeedForUrlString(urlString: "\(baseUrl)/ktfyn", completion: completion)

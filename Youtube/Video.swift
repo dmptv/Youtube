@@ -53,11 +53,11 @@ class Video: SafeJsonObject {
     override func setValue(_ value: Any?, forKey key: String) {
         
         if key == "channel" {
-            
               // custom channel setup
             let channelDictionary = value as! [String: AnyObject]
             self.channel = Channel()
             self.channel?.setValuesForKeys(channelDictionary)
+                          //.profile_image_name = "kanye_profile"
 
         } else {
             super.setValue(value, forKey: key)
